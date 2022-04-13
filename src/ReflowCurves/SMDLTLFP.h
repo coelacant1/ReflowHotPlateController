@@ -7,7 +7,7 @@ private:
     float setPoint;
 
 public:
-    SMDLTLFP(){
+    SMDLTLFP() : ReflowCurve("SMDLTLFP"){
         setPointControl.AddParameter(&setPoint);
 
         setPointControl.AddKeyFrame(0.0f, 25.0f);

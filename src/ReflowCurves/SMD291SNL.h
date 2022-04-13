@@ -7,7 +7,7 @@ private:
     float setPoint;
 
 public:
-    SMD291SNL(){
+    SMD291SNL() : ReflowCurve("SMD291SNL"){
         setPointControl.AddParameter(&setPoint);
 
         setPointControl.AddKeyFrame(0.0f, 25.0f);

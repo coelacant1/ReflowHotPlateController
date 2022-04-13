@@ -31,6 +31,10 @@ public:
     static uint8_t GetValue(){
         return currentValue;
     }
+
+    static uint8_t Reset(){
+        currentValue = 0;
+    }
 };
 
 long ButtonHandler::previousMillis;
