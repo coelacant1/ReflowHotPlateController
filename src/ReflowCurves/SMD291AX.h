@@ -18,7 +18,7 @@ public:
     }
 
     float GetTemperatureAtTime(float seconds){
-        setPointControl.SetCurrentTime(seconds);
+        setPointControl.Update(seconds);
         
         return setPoint;
     }

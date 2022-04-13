@@ -32,7 +32,7 @@ public:
         return currentValue;
     }
 
-    static uint8_t Reset(){
+    static void Reset(){
         currentValue = 0;
     }
 };

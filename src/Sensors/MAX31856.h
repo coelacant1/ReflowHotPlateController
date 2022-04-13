@@ -9,7 +9,6 @@ private:
 
 public:
     MAX31856(uint8_t CS, uint8_t DI, uint8_t DO, uint8_t CLK) : maxthermo(Adafruit_MAX31856(CS, DI, DO, CLK)){
-        
         maxthermo.begin();
 
         maxthermo.setThermocoupleType(MAX31856_TCTYPE_K);
@@ -20,11 +19,15 @@ public:
     }
 
     float GetColdJunctionTemperature(){
-        return maxthermo.readCJTemperature();
+        float cj = maxthermo.readCJTemperature();
+
+        return cj;
     }
 
     float GetThermocoupleTemperature(){
-        return maxthermo.readThermocoupleTemperature();
+        float th = maxthermo.readThermocoupleTemperature();
+
+        return th;
     }
 
     Fault CheckFaults(){

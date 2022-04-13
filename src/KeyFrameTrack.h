@@ -24,7 +24,6 @@ private:
     float stopFrameTime = -100000.0f;//initialize to out of bounds
     int currentFrames = 0;
     int currentParameters = 0;
-    long startTime = 0;
     bool isActive = true;
     float parameterValue = 0.0f;
     float currentTime = 0.0f;
@@ -41,7 +40,6 @@ public:
     KeyFrameTrack(int maxParameters, float min, float max, int maxKeyFrames, InterpolationMethod interpMethod) : maxParameters(maxParameters), maxKeyFrames(maxKeyFrames){
         this->min = min;
         this->max = max;
-        this->startTime = millis();
         this->interpMethod = interpMethod;
 
         keyFrames = new KeyFrame*[maxKeyFrames];
@@ -56,26 +54,6 @@ public:
         delete[] keyFrames;
     }
 
-    float GetCurrentTime(){
-        currentTime = fmod(millis() / 1000.0f + timeOffset, stopFrameTime - startFrameTime) + startFrameTime;//normalize time and add offset
-
-        return currentTime;
-    }
-
-    void SetCurrentTime(float setTime){
-        GetCurrentTime();
-
-        //Test case: current time = 1.32s, set time = 1.09s, 1.59s
-        timeOffset = setTime - currentTime;//1.59 - 1.32 = 0.27, 1.09 - 1.32 = -0.23
-    }
-
-    void Pause(){
-        isActive = false;
-    }
-
-    void Play(){
-        isActive = true;
-    }
 
     void AddParameter(float* parameter){
         if(currentParameters < maxParameters){
@@ -121,15 +99,14 @@ public:
         }
     }
 
-    void Update(){
-        GetCurrentTime();
-
+    
+    void Update(float time){
         byte previousFrame = 0, nextFrame = 0;
 
         //find current time, find keyframe before and after
-        if(currentFrames > 0 && isActive){
+        if(currentFrames > 0){
             for (int i = currentFrames - 1; i >= 0; i--){
-                if (currentTime >= keyFrames[i]->Time){
+                if (time >= keyFrames[i]->Time){
                     previousFrame = i;
                     nextFrame = i + 1;
 
@@ -137,7 +114,7 @@ public:
                 }
             }
 
-            float ratio = Mathematics::Map(currentTime, keyFrames[previousFrame]->Time, keyFrames[nextFrame]->Time, 0.0f, 1.0f);
+            float ratio = Mathematics::Map(time, keyFrames[previousFrame]->Time, keyFrames[nextFrame]->Time, 0.0f, 1.0f);
             float parameter = 0.0f;
 
             switch(interpMethod){

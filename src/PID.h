@@ -19,7 +19,9 @@ public:
         previousMillis = millis();
     }
 
-	~PID();
+	~PID(){
+
+    }
 
 	PID(float kp, float ki, float kd){
         this->kp = kp;
